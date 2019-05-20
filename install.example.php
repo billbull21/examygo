@@ -5,37 +5,46 @@
  * 
  * rename or duplicate this, if you want to reconfigure your app.
  */
-if (isset($_POST['submit'])) {
-    //validasi
-    $db_connect = [
-        'HOST'  =>  $_POST['dbhost'],
-        'USER'  =>  $_POST['dbuser'],
-        'PASS'  =>  $_POST['dbpass'],
-        'NAME'  =>  $_POST['dbname'],
-    ];
+require_once "Classes/Helper.php";
+session_start();
+if (!isset($_SESSION['csrf'])) {
+    $_SESSION['csrf'] = Helper::str_rand();
 }
 
+if (isset($_POST['submit'])) {
+    if ($_SESSION['csrf'] == $_POST['csrf']) {
+        //membuat file config.php
+        $file_config = fopen('config.php', 'w+');
+        fwrite($file_config, "<?php \r\n");
+        fwrite($file_config, "\$get_HOST='" . $_POST['dbhost'] . "'; \r\n");
+        fwrite($file_config, "\$get_USER='" . $_POST['dbuser'] . "'; \r\n");
+        fwrite($file_config, "\$get_PASS='" . $_POST['dbpass'] . "'; \r\n");
+        fwrite($file_config, "\$get_NAME='" . $_POST['dbname'] . "'; \r\n");
+        fwrite($file_config, "?>");
+        fclose($file_config);
+
+        unset($_SESSION['csrf']);
+        header('Location: install.php?success=true');
+    } else {
+        header('Location: install.php');
+    }
+}
+
+if (isset($_POST['confirm'])) {
+    if ($_SESSION['csrf'] == $_POST['csrf']) {
+        header('Location: index.php');
+    }
+}
 require_once 'Views/Templates/headerInstall.php';
 ?>
 
 <?php if ($_GET['success'] == true) : ?>
     <div class="border p-3 bg-light" style="border-radius:4px;">
-        <p class="alert alert-warning">Copy this script below, and create a file "config.php" into root directory examygo and paste to it!</p>
-        <div class="card bg-light p-3" style="border-radius:4px;">
-            <div class="border p-2 mb-3" style="border-radius:4px;">
-                <p><?= htmlspecialchars('<?php') ?></p>
-                <p><?= htmlspecialchars('//copy this and paste it into a config.php file') ?></p>
-                <p>$get_HOST = <?= "'" . $db_connect['HOST'] . "';"; ?></p>
-                <p>$get_USER = <?= "'" . $db_connect['USER'] . "';"; ?></p>
-                <p>$get_PASS = <?= "'" . $db_connect['PASS'] . "';"; ?></p>
-                <p>$get_NAME = <?= "'" . $db_connect['NAME'] . "';"; ?></p>
-                <p><?= "?>" ?></p>
-            </div>
-            <p class="alert alert-warning"><i>Note!: pastikan konfigurasi yang tertera diatas sesuai dengan database milik anda dan sudah membuat file config.php</i></p>
-            <form action="index.php" method="post">
-                <button name="confirm" type="submit" class="btn btn-primary">KONFIRMASI</button>
-            </form>
-        </div>
+        <p class="alert alert-warning">Congratulations!, you have done installation examygo</p>
+        <form action="install.php?success=true" method="post">
+            <input type="hidden" name="csrf" value="<?= $_SESSION['csrf']; ?>" />
+            <button name="confirm" type="submit" class="btn btn-primary">Confirm</button>
+        </form>
     </div>
 <?php endif; ?>
 
@@ -46,7 +55,7 @@ require_once 'Views/Templates/headerInstall.php';
             <hr />
             <h4>Configure Your Database!</h4>
             <p>Please, fill in the form to install Examygo!</p>
-            <p><i>Happy Install!!!<i></p>
+            <p><i>Happy Install!!!</i></p>
         </div>
         <div class="alert alert-warning">Fill it the form with your database cridential!</div>
         <form action="install.php?success=true" method="POST">
@@ -66,7 +75,7 @@ require_once 'Views/Templates/headerInstall.php';
                 <label for="DB_NAME">DATABASE NAME<span class="text-danger">*</span></label>
                 <input type="text" class="form-control" name="dbname" id="DB_NAME" placeholder="examygo" required />
             </div>
-            <input type="hidden" name="" />
+            <input type="hidden" name="csrf" value="<?= $_SESSION['csrf']; ?>" />
             <p>if, you hit the submit button. you agree with our policy & privacy!</p>
             <input class="btn btn-primary" type="submit" name="submit" value="Submit" />
         </form>
