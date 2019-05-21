@@ -9,11 +9,13 @@ if (file_exists('install.php') && !file_exists('config.php')) {
     }
 
     return false;
+}else if ($user->getUser == false) {
+    Redirect::to('register');
 }
+
+
 
 require_once "Views/Templates/header.php";
 ?>
-
-<h1>Halaman Index</h1>
 
 <?php require_once "Views/Templates/footer.php"; ?>

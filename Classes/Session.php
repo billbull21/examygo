@@ -16,9 +16,4 @@ class Session{
         return $_SESSION[$nama];
     }
 
-    public static function delete($nama)
-    {
-        return (isset($_SESSION[$nama])) ? unset($_SESSION[$nama]) : false;
-    }
-
 }

@@ -20,8 +20,9 @@ class Database{
         $this->db_name = $get_NAME;
 
         $this->mysqli = new mysqli($this->db_host, $this->db_user, $this->db_pass, $this->db_name);
-        if ( mysqli_connect_error() ) {
-            die("gagal terhubung!");
+        /* check connection */
+        if (mysqli_connect_errno()) {
+            die("Connect failed: ". mysqli_connect_error());
         }
     }
 
@@ -32,6 +33,69 @@ class Database{
         }
 
         return self::$INSTANCE;
+    }
+
+    public function insertUser($table, $fields = [])
+    {
+        $column = implode(", ", array_keys($fields));
+
+        $valueArrays = [];
+        $i = 0;
+        foreach ($fields as $values => $value) {
+            if (is_int($value)) {
+                $valueArrays[$i] = $this->escape($value);
+            }else{
+                $valueArrays[$i] = "'".$this->escape($value)."'";
+            }
+            $i++;
+        }
+        $value = implode(", ", $valueArrays);
+
+        $query = "INSERT INTO $table ($column) VALUES ($value)";
+        $result = $this->mysqli->query($query);
+        if( $result ){
+            unset($_SESSION['csrf']);
+            Redirect::to('dashboard');
+        }else{
+            die('gagal tambah');
+        }
+    }
+
+    public function getUser($table, $key = '', $value = '')
+    {
+        if ($key == '') {
+            $query = "SELECT * FROM $table";
+            $result = $this->mysqli->query($query);
+            if ( mysqli_num_rows($result) != 0 ) {
+                while ($row = $result->fetch_assoc()) {
+                    $results[] = $row;
+                }
+
+                return $results;
+            }else{
+                return false;
+            }
+        }else{
+            if (!is_int($value)) {
+                $value = "'" . $value . "'";
+            }
+
+            $query = "SELECT * FROM $table WHERE $key = $value";
+            $result = $this->mysqli->query($query);
+            if (!empty($result)) {
+                while ($row = $result->fetch_assoc()) {
+                    return $row;
+                }
+            }else{
+                return false;
+            }
+        }
+    }
+
+    //escaping input
+    public function escape($nama)
+    {
+        return $this->mysqli->real_escape_string(htmlentities(htmlspecialchars($nama)));
     }
 }
 
