@@ -76,7 +76,7 @@ class Database{
             }
         }else{
             if (!is_int($value)) {
-                $value = "'" . $value . "'";
+                $value = "'" . $this->escape($value) . "'";
             }
 
             $query = "SELECT * FROM $table WHERE $key = $value";
