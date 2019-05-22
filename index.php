@@ -9,7 +9,7 @@ if (file_exists('install.php') && !file_exists('config.php')) {
     }
 
     return false;
-}else if ($user->getUser == false) {
+}else if ($user->getUser() == false) {
     Redirect::to('register');
 }
 

@@ -16,4 +16,22 @@ class Session{
         return $_SESSION[$nama];
     }
 
+    public static function delete($nama)
+    {
+       if( self::exists($nama) ){
+           unset($_SESSION[$nama]);
+       }
+    }
+
+    public static function flash($nama, $msg = '')
+    {
+        if ( self::exists($nama) ) {
+            $session = self::get($nama);
+            self::delete($nama);
+            return $session;
+        }else{
+            self::set($nama, $msg);
+        }
+    }
+
 }

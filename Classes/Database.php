@@ -54,8 +54,7 @@ class Database{
         $query = "INSERT INTO $table ($column) VALUES ($value)";
         $result = $this->mysqli->query($query);
         if( $result ){
-            unset($_SESSION['csrf']);
-            Redirect::to('dashboard');
+            return true;
         }else{
             die('gagal tambah');
         }
