@@ -19,7 +19,7 @@
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav">
-                <?php if (Session::exists('username')) { ?>
+                <?php if (Session::exists('examygoUser')) { ?>
                     <li class="nav-item">
                         <!-- Example single danger button -->
                         <div class="btn-group">

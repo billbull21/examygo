@@ -24,4 +24,21 @@ class User{
         else return false;
     }
 
+    //get some data from database to login
+    public function loginUser($username, $password)
+    {
+        //fetch data from database
+        $data = $this->getUser('username', $username);
+        
+        if (!empty($data)) {
+            if (password_verify($password, $data['password'])) {
+                return true;
+            }else{
+                return false;
+            }
+        }else {
+            return false;
+        }
+    } 
+
 }

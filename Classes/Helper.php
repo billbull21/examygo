@@ -2,16 +2,20 @@
 
 class Helper{
 
-    public static function str_rand()
+    //generate new token and store it into a session
+    public static function generateToken()
     {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $randomString = '';
+        return $_SESSION['token'] = md5(uniqid(rand(), true));
+    }
 
-        for ($i = 0; $i < 32; $i++) {
-            $index = rand(0, strlen($characters) - 1);
-            $randomString .= $characters[$index];
+    //check $param which have generateToken()
+    public static function checkToken($param)
+    {
+        if ($param === $_SESSION['token']) {
+            return true;
         }
 
-        return $randomString; 
+        return false;
     }
+    
 }

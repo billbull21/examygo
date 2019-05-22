@@ -8,48 +8,44 @@ if (Session::exists('examygoUser')) {
     header('Location: dashboard.php');
 }
 
-if (!Session::exists('examygoCsrf')) {
-    Session::set('examygoCsrf', Helper::str_rand());
-}
-
 if (Input::get('submit')) {
 
-    //menjaga isi form tidak hilang saat validasi gagal
-    $_SESSION = $_POST;
-    //panggil kelas validasi
-    $validasi = new Validation;
+    if (Helper::checkToken(Input::get('csrf'))) {
+        //menjaga isi form tidak hilang saat validasi gagal
+        $_SESSION = $_POST;
+        //panggil kelas validasi
+        $validasi = new Validation;
 
-    //rule validasi
-    $validasi = $validasi->check([
-        'nama_user'  => [
-            'required'  =>   true,
-            'min'       =>   3,
-            'max'       =>   30,
-            'char'      =>   '/^[a-zA-Z ]*$/',
-            'unique'    =>   true
-        ],
-        'username'  => [
-            'required'  =>   true,
-            'min'       =>   3,
-            'max'       =>   30,
-            'char'      =>   '/^[a-z0-9_]*$/',
-            'unique'    =>   true
-        ],
-        'password'  => [
-            'required'  =>   true,
-            'min'       =>   6
-        ],
-        'password2' => [
-            'required'  =>  true,
-            'match'     =>  true
-        ]
-    ]);
+        //rule validasi
+        $validasi = $validasi->check([
+            'nama_user'  => [
+                'required'  =>   true,
+                'min'       =>   3,
+                'max'       =>   30,
+                'char'      =>   '/^[a-zA-Z ]*$/',
+                'unique'    =>   true
+            ],
+            'username'  => [
+                'required'  =>   true,
+                'min'       =>   3,
+                'max'       =>   30,
+                'char'      =>   '/^[a-z0-9_]*$/',
+                'unique'    =>   true
+            ],
+            'password'  => [
+                'required'  =>   true,
+                'min'       =>   6
+            ],
+            'password2' => [
+                'required'  =>  true,
+                'match'     =>  true
+            ]
+        ]);
 
-    // var_dump($validasi->passed());
-    // die();
-    //mengecek apakah lolos dari error!
-    if ($validasi->passed()) {
-        if (Session::get('examygoCsrf') == Input::get('csrf')) {
+        // var_dump($validasi->passed());
+        // die();
+        //mengecek apakah lolos dari error!
+        if ($validasi->passed()) {
             if ($user->getUser() == false) {
                 $user->registerUser([
                     'nama_user'     =>  Input::get('nama_user'),
@@ -64,25 +60,22 @@ if (Input::get('submit')) {
                     'password'      =>  password_hash(Input::get('password'), PASSWORD_DEFAULT)
                 ]);
             }
-            //delete csrf session to get the new one when click submit button
-            Session::delete('examygoCsrf');
-
             //flash message
             Session::flash('examygoFlashRegister', 'Berhasil menambahkan data baru!');
             //make a session for login authentication
             Session::set('examygoUser', Input::get('username'));
             Redirect::to('dashboard');
         } else {
-            die('oops!, token is not valid');
+            $errors = $validasi->errors();
         }
     } else {
-        $errors = $validasi->errors();
+        die('oops!, token is not valid');
     }
 }
-require_once "Views/Templates/headerInstall.php";
+require_once "Views/Templates/header.php";
 ?>
 
-<div class="border p-3 rounded bg-light">
+<div class="border p-3 rounded bg-light mt-3">
     <h2 class="center">Register</h2>
     <hr />
     <form action="register.php" method="POST">
@@ -106,7 +99,7 @@ require_once "Views/Templates/headerInstall.php";
             <?php if (!empty($errors['password2'])) : ?><div class="alert alert-danger"><?= $errors['password2']; ?></div><?php endif; ?>
             <input type="password" class="form-control" name="password2" id="password2" placeholder="ulangi password" required />
         </div>
-        <input type="hidden" name="csrf" value="<?= Session::get('examygoCsrf'); ?>" />
+        <input type="hidden" name="csrf" value="<?= Helper::generateToken() ?>" />
         <input class="btn btn-primary" type="submit" name="submit" value="Submit" />
     </form>
 </div>
