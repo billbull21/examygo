@@ -75,31 +75,35 @@ if (Input::get('submit')) {
 require_once "Views/Templates/header.php";
 ?>
 
-<div class="border p-3 rounded bg-light mt-3">
-    <h2 class="center">Register</h2>
-    <hr />
-    <form action="register.php" method="POST">
-        <div class="form-group">
-            <label for="nama_user">Nama<span class="text-danger">*</span></label>
-            <?php if (!empty($errors['nama_user'])) : ?><div class="alert alert-danger"><?= $errors['nama_user']; ?></div><?php endif; ?>
-            <input type="text" class="form-control" name="nama_user" id="nama" placeholder="Nama Admin/Pengawas/Proktor" value="<?= $_SESSION['nama_user']; ?>" required />
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4 border p-3 rounded bg-white shadow-lg mt-3">
+            <h2 class="center">Register</h2>
+            <hr />
+            <form action="register.php" method="POST">
+                <div class="form-group">
+                    <label for="nama_user">Nama<span class="text-danger">*</span></label>
+                    <?php if (!empty($errors['nama_user'])) : ?><div class="alert alert-danger"><?= $errors['nama_user']; ?></div><?php endif; ?>
+                    <input type="text" class="form-control" name="nama_user" id="nama" placeholder="Nama Admin/Pengawas/Proktor" value="<?= $_SESSION['nama_user']; ?>" required />
+                </div>
+                <div class="form-group">
+                    <label for="username">Username<span class="text-danger">*</span></label>
+                    <?php if (!empty($errors['username'])) : ?><div class="alert alert-danger"><?= $errors['username']; ?></div><?php endif; ?>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="admin" value="<?= $_SESSION['username']; ?>" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password<span class="text-danger">*</span></label>
+                    <?php if (!empty($errors['password'])) : ?><div class="alert alert-danger"><?= $errors['password']; ?></div><?php endif; ?>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="password" required />
+                </div>
+                <div class="form-group">
+                    <label for="password2">Konfirmasi Password<span class="text-danger">*</span></label>
+                    <?php if (!empty($errors['password2'])) : ?><div class="alert alert-danger"><?= $errors['password2']; ?></div><?php endif; ?>
+                    <input type="password" class="form-control" name="password2" id="password2" placeholder="ulangi password" required />
+                </div>
+                <input type="hidden" name="csrf" value="<?= Helper::generateToken() ?>" />
+                <input class="btn btn-primary btn-block" type="submit" name="submit" value="Submit" />
+            </form>
         </div>
-        <div class="form-group">
-            <label for="username">Username<span class="text-danger">*</span></label>
-            <?php if (!empty($errors['username'])) : ?><div class="alert alert-danger"><?= $errors['username']; ?></div><?php endif; ?>
-            <input type="text" class="form-control" name="username" id="username" placeholder="admin" value="<?= $_SESSION['username']; ?>" required />
-        </div>
-        <div class="form-group">
-            <label for="password">Password<span class="text-danger">*</span></label>
-            <?php if (!empty($errors['password'])) : ?><div class="alert alert-danger"><?= $errors['password']; ?></div><?php endif; ?>
-            <input type="password" class="form-control" name="password" id="password" placeholder="password" required />
-        </div>
-        <div class="form-group">
-            <label for="password2">Konfirmasi Password<span class="text-danger">*</span></label>
-            <?php if (!empty($errors['password2'])) : ?><div class="alert alert-danger"><?= $errors['password2']; ?></div><?php endif; ?>
-            <input type="password" class="form-control" name="password2" id="password2" placeholder="ulangi password" required />
-        </div>
-        <input type="hidden" name="csrf" value="<?= Helper::generateToken() ?>" />
-        <input class="btn btn-primary" type="submit" name="submit" value="Submit" />
-    </form>
+    </div>
 </div>

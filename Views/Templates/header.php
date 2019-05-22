@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="Assets/fontawesome/css/all.min.css" />
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-white shadow-sm">
         <a class="navbar-brand" href="/examygo/">EXAMYGO</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -46,4 +46,3 @@
             </ul>
         </div>
     </nav>
-    <div class="container">
