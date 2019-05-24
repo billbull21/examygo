@@ -5,7 +5,7 @@
 require_once "../Core/init.php";
 
 if (Session::exists('examygoUser')) {
-    header('Location: dashboard.php');
+    Redirect::to('/examygo/dashboard/');
 }
 
 if (Input::get('submit')) {
@@ -38,31 +38,33 @@ if (Input::get('submit')) {
         die('oops!, token is not valid');
     }
 }
+
+if (Session::exists('examygoFlash')) {
+    $errors['username'] = Session::flash('examygoFlash');
+}
+
 require_once "../Views/Templates/header.php";
 ?>
 
-<div class="container">
-    <?php if (Session::exists('examygoFlash')) { ?>
-        <p class="alert alert-danger mt-3"><?= Session::flash('examygoFlash'); ?></p>
-    <?php } ?>
-    <div class="row justify-content-center">
-        <div class="col-4 border p-3 rounded bg-white shadow-lg mt-3">
-            <h2 class="center">Login</h2>
-            <hr />
-            <form action="login.php" method="POST">
-                <div class="form-group">
-                    <label for="username">Username<span class="text-danger">*</span></label>
-                    <?php if (!empty($errors['username'])) : ?><div class="alert alert-danger"><?= $errors['username']; ?></div><?php endif; ?>
-                    <input type="text" class="form-control" name="username" id="username" placeholder="admin" value="<?= $_SESSION['username']; ?>" required />
-                </div>
-                <div class="form-group">
-                    <label for="password">Password<span class="text-danger">*</span></label>
-                    <?php if (!empty($errors['password'])) : ?><div class="alert alert-danger"><?= $errors['password']; ?></div><?php endif; ?>
-                    <input type="password" class="form-control" name="password" id="password" placeholder="password" required />
-                </div>
-                <input type="hidden" name="csrf" value="<?= Helper::generateToken() ?>" />
-                <input class="btn btn-primary btn-block" type="submit" name="submit" value="Submit" />
-            </form>
-        </div>
+<div class="row justify-content-center m-2">
+    <div class="col my-boxes border p-3 rounded bg-white shadow-lg mt-3">
+        <h2 class="center">Login</h2>
+        <hr />
+        <form action="login.php" method="POST">
+            <div class="form-group">
+                <label for="username">Username<span class="text-danger">*</span></label>
+                <?php if (!empty($errors['username'])) : ?><div class="alert alert-danger"><?= $errors['username']; ?></div><?php endif; ?>
+                <input type="text" class="form-control" name="username" id="username" placeholder="admin" value="<?php if (isset($_SESSION['username'])) echo $_SESSION['username']; ?>" required />
+            </div>
+            <div class="form-group">
+                <label for="password">Password<span class="text-danger">*</span></label>
+                <?php if (!empty($errors['password'])) : ?><div class="alert alert-danger"><?= $errors['password']; ?></div><?php endif; ?>
+                <input type="password" class="form-control" name="password" id="password" placeholder="password" required />
+            </div>
+            <input type="hidden" name="csrf" value="<?= Helper::generateToken() ?>" />
+            <input class="btn btn-primary btn-block" type="submit" name="submit" value="Submit" />
+        </form>
     </div>
 </div>
+
+<?php require_once "../Views/Templates/footer.php"; ?>

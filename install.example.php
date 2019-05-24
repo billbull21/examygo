@@ -9,7 +9,7 @@ require_once "Classes/Helper.php";
 session_start();
 
 if (isset($_POST['submit'])) {
-    if (Helper::checkToken(Input::get('csrf'))) {
+    if (Helper::checkToken($_POST['csrf'])) {
         //membuat file config.php
         $file_config = fopen('config.php', 'w+');
         fwrite($file_config, "<?php \r\n");
@@ -28,7 +28,7 @@ if (isset($_POST['submit'])) {
 }
 
 if (isset($_POST['confirm'])) {
-    if (Helper::checkToken(Input::get('csrf'))) {
+    if (Helper::checkToken($_POST['csrf'])) {
         header('Location: index.php');
     }
 }
@@ -45,7 +45,7 @@ require_once 'Views/Templates/headerInstall.php';
     </div>
 <?php endif; ?>
 
-<?php if ($_GET['success'] == false || substr($_SERVER['REQUEST_URI'], -11) == 'install.php') : ?>
+<?php if (substr($_SERVER['REQUEST_URI'], -11) == 'install.php') : ?>
     <div class="border p-3 bg-light" style="border-radius:4px;">
         <div class="jumbotron">
             <h2>Install Examygo</h2>
@@ -55,7 +55,7 @@ require_once 'Views/Templates/headerInstall.php';
             <p><i>Happy Install!!!</i></p>
         </div>
         <div class="alert alert-warning">Fill it the form with your database cridential!</div>
-        <form action="install.php?success=true" method="POST">
+        <form action="install.php" method="POST">
             <div class="form-group">
                 <label for="DB_HOST">DATABASE HOST<span class="text-danger">*</span></label>
                 <input type="text" class="form-control" name="dbhost" id="DB_HOST" placeholder="localhost" required />

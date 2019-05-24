@@ -8,11 +8,11 @@ if (!Session::exists('username')) {
 
 require_once "../Views/Templates/header.php";
 ?>
-<div class="container">
-    <?php if (Session::exists('examygoFlashRegister')) { ?>
+<?php if (Session::exists('examygoFlashRegister')) { ?>
+    <div class="container mt-3">
         <p class="alert alert-success"><?= Session::flash('examygoFlashRegister'); ?></p>
-    <?php } ?>
-</div>
+    </div>
+<?php } ?>
 
 <div class="row m-2">
     <div class="col col-md shadow-sm rounded bg-white m-2 py-2">

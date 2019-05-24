@@ -1,5 +1,6 @@
 <?php
 
+require_once "Core/init.main.php";
 if (file_exists('install.php') && !file_exists('config.php')) {
     Redirect::to('install');
 }else if ( file_exists('install.php') && file_exists('config.php') ) {
@@ -8,15 +9,14 @@ if (file_exists('install.php') && !file_exists('config.php')) {
     }
     
     return false;
-}
-
-require_once "Core/init.main.php";
-
-if ($user->getUser() == false) {
+}else if ($user->getUser() == false) {
     Redirect::to('/examygo/user/register.php');
 }else{
     Redirect::to('/examygo/dashboard/');
 }
+
+
+
 
 
 

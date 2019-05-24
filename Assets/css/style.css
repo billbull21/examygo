@@ -28,6 +28,15 @@ body{
     -ms-flex: 0 0 320px;
     flex: 0 0 320px;
 }
+.my-boxes{
+    -ms-flex: 0 0 350px;
+    flex: 0 0 350px;
+}
+.dropdown-menu-right{
+    left: auto !important;
+    right: 0;
+    box-sizing: border-box;
+}
 .menu{
     overflow-y: auto;
 }
