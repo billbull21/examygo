@@ -2,7 +2,7 @@
 /** 
  * this file is used for register a new user admin.
  */
-require_once "Core/init.php";
+require_once "../Core/init.php";
 
 if (Session::exists('examygoUser')) {
     header('Location: dashboard.php');
@@ -27,7 +27,7 @@ if (Input::get('submit')) {
             if ($user->loginUser(Input::get('username'), Input::get('password'))) {
                 //make a session for login authentication
                 Session::set('examygoUser', Input::get('username'));
-                Redirect::to('dashboard');
+                Redirect::to('/examygo/dashboard/');
             } else {
                 $errors['username'] = 'Login gagal!';
             }
@@ -38,13 +38,13 @@ if (Input::get('submit')) {
         die('oops!, token is not valid');
     }
 }
-require_once "Views/Templates/header.php";
+require_once "../Views/Templates/header.php";
 ?>
 
-<?php if (Session::exists('examygoFlash')) { ?>
-    <p class="alert alert-success"><?= Session::flash('examygoFlash'); ?></p>
-<?php } ?>
 <div class="container">
+    <?php if (Session::exists('examygoFlash')) { ?>
+        <p class="alert alert-danger mt-3"><?= Session::flash('examygoFlash'); ?></p>
+    <?php } ?>
     <div class="row justify-content-center">
         <div class="col-4 border p-3 rounded bg-white shadow-lg mt-3">
             <h2 class="center">Login</h2>

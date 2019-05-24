@@ -1,0 +1,52 @@
+body{
+    overflow-y: auto;
+}
+.post-wrapper{
+    margin-top:69px;
+    display: block;
+}
+.navbar {
+    height: 69px;
+}
+.side-slide{
+    position: fixed;
+    left: -250px;
+    width: 250px;
+    z-index: 999;
+    transition: all ease-in 0.5s;
+}
+.show{
+    left:0;
+}
+.post-wrapper{
+    transition: all ease-in 0.5s;
+}
+.change{
+    margin-left: 260px;
+}
+.my-sidebar{
+    -ms-flex: 0 0 320px;
+    flex: 0 0 320px;
+}
+.menu{
+    overflow-y: auto;
+}
+.menu li:nth-child(odd) {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    background: #f2f2f2;
+}
+.menu li:nth-child(even) {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    background: #fff;
+}
+.menu li a{
+    padding: 15px 25px;
+    color: #000;
+}
+.menu li a:hover{
+    background: #e2e2e2b2;
+}

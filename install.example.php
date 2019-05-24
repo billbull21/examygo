@@ -7,12 +7,9 @@
  */
 require_once "Classes/Helper.php";
 session_start();
-if (!isset($_SESSION['csrf'])) {
-    $_SESSION['csrf'] = Helper::str_rand();
-}
 
 if (isset($_POST['submit'])) {
-    if ($_SESSION['csrf'] == $_POST['csrf']) {
+    if (Helper::checkToken(Input::get('csrf'))) {
         //membuat file config.php
         $file_config = fopen('config.php', 'w+');
         fwrite($file_config, "<?php \r\n");
@@ -31,7 +28,7 @@ if (isset($_POST['submit'])) {
 }
 
 if (isset($_POST['confirm'])) {
-    if ($_SESSION['csrf'] == $_POST['csrf']) {
+    if (Helper::checkToken(Input::get('csrf'))) {
         header('Location: index.php');
     }
 }
@@ -42,7 +39,7 @@ require_once 'Views/Templates/headerInstall.php';
     <div class="border p-3 bg-light" style="border-radius:4px;">
         <p class="alert alert-warning">Congratulations!, you have done installation examygo</p>
         <form action="install.php?success=true" method="post">
-            <input type="hidden" name="csrf" value="<?= $_SESSION['csrf']; ?>" />
+            <input type="hidden" name="csrf" value="<?= Helper::generateToken() ?>" />
             <button name="confirm" type="submit" class="btn btn-primary">Confirm</button>
         </form>
     </div>
@@ -75,7 +72,7 @@ require_once 'Views/Templates/headerInstall.php';
                 <label for="DB_NAME">DATABASE NAME<span class="text-danger">*</span></label>
                 <input type="text" class="form-control" name="dbname" id="DB_NAME" placeholder="examygo" required />
             </div>
-            <input type="hidden" name="csrf" value="<?= $_SESSION['csrf']; ?>" />
+            <input type="hidden" name="csrf" value="<?= Helper::generateToken() ?>" />
             <p>if, you hit the submit button. you agree with our policy & privacy!</p>
             <input class="btn btn-primary" type="submit" name="submit" value="Submit" />
         </form>

@@ -12,6 +12,8 @@ class Database{
     public function __construct(){
         if (file_exists("config.php")) {
             include "config.php";
+        }else if ( file_exists("../config.php") ) {
+            include "../config.php";
         }
 
         $this->db_host = $get_HOST;
