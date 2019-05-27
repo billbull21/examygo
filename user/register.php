@@ -22,15 +22,13 @@ if (Input::get('submit')) {
                 'required'  =>   true,
                 'min'       =>   3,
                 'max'       =>   30,
-                'char'      =>   '/^[a-zA-Z ]*$/',
-                'unique'    =>   true
+                'char'      =>   '/^[a-zA-Z ]*$/'
             ],
             'username'  => [
                 'required'  =>   true,
                 'min'       =>   3,
                 'max'       =>   30,
-                'char'      =>   '/^[a-z0-9_]*$/',
-                'unique'    =>   true
+                'char'      =>   '/^[a-z0-9_]*$/'
             ],
             'password'  => [
                 'required'  =>   true,
@@ -69,11 +67,10 @@ if (Input::get('submit')) {
             $errors = $validasi->errors();
         }
     } else {
-        die('oops!, token is not valid');
+            Redirect::to('/examygo/user/register.php');
     }
 }
-require_once "../Views/Templates/header.php";
-?>
+require_once "../Views/Templates/header.php"; ?>
 
 <div class="row justify-content-center m-2">
     <div class="col my-boxes border p-3 rounded bg-white shadow-lg mt-3">

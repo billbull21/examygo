@@ -6,9 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Examygo</title>
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="../Assets/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../Assets/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="../Assets/clockpicker/jquery-clockpicker.min.css">
     <link rel="stylesheet" href="../Assets/css/style.css" />
+    <link rel="stylesheet" href="../Assets/sweetalert2/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="../Assets/jquery-ui-1.11.4/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="../Assets/jquery-ui-1.11.4/jquery-ui.theme.css" />
+    <!-- javascript -->
+    <script src="../Assets/js/jquery.slim.min.js"></script>
+    <script src="../Assets/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
+    <script src="../Assets/jquery-ui-1.11.4/jquery-ui.js"></script>
+    <script src="../Assets/jquery-ui-1.11.4/jquery-ui.min.js"></script>
 </head>
 
 <body class="bg-light">
@@ -32,7 +42,6 @@
                                 <p class="dropdown-header"><?= Session::get('examygoUser') ?></p>
                                 <a class="dropdown-item" href="#"><i class="fas fa-user-circle"></i>&nbsp;Profile</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-bell"></i>&nbsp;Notifications</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-book"></i>&nbsp;Courses</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-history"></i>&nbsp;History</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#"><i class="fas fa-user-cog"></i>&nbsp;Setting</a>
@@ -51,7 +60,12 @@
             <div class="menu">
                 <li><a href="/examygo/dashboard/"><i class="fas fa-tachometer-alt"></i>&nbsp;Dashboard</a></li>
                 <li><a href="/examygo/courses/"><i class="fas fa-book"></i>&nbsp;Courses</a></li>
-                <li><a href="/examygo/office/"><i class="fas fa-building"></i>&nbsp;Office</a></li>
+                <?php if ($user->getUser('username', Session::get('examygoUser'))['role'] == 2 || $user->getUser('username', Session::get('examygoUser'))['role'] == 1) :  ?>
+                    <li><a href="/examygo/office/"><i class="fas fa-building"></i>&nbsp;Office</a></li>
+                <?php endif; ?>
+                <?php if (($user->getUser('username', Session::get('examygoUser'))['role'] == 2 || $user->getUser('username', Session::get('examygoUser'))['role'] == 1) && isset($courseId)) { ?>
+                    <li><a href="/examygo/office/"><i class="fas fa-users"></i>&nbsp;Participant</a></li>
+                <?php } ?>
             </div>
         </div>
         <div class="container-fluid m-0 p-0 float-right clearfix" id="content">

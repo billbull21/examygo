@@ -12,15 +12,15 @@ class User{
     public function getUser($key = '', $value = '')
     {
         if ($key != '') {
-            return $this->_db->getUser('users', $key, $value);            
+            return $this->_db->getData('users', $key, $value);            
         }
-        return $this->_db->getUser('users', $key = '', $value = '');
+        return $this->_db->getData('users', $key = '', $value = '');
     }
 
     //adding data user by register in form register
     public function registerUser($fields = [])
     {
-        if ( $this->_db->insertUser('users', $fields) ) return true;
+        if ( $this->_db->insertData('users', $fields) ) return true;
         else return false;
     }
 

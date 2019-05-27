@@ -1,5 +1,7 @@
 <?php
-
+/** 
+ * File For Connect the database and proccess the CRUD
+ * */ 
 class Database{
 
     private static $INSTANCE = null;
@@ -8,7 +10,8 @@ class Database{
             $db_user,
             $db_pass,
             $db_name;
-            
+    
+    // Connection
     public function __construct(){
         if (file_exists("config.php")) {
             include "config.php";
@@ -28,6 +31,7 @@ class Database{
         }
     }
 
+    // avoid multiple call database,
     public static function getInstance()
     {
         if (!isset(self::$INSTANCE)) {
@@ -37,7 +41,8 @@ class Database{
         return self::$INSTANCE;
     }
 
-    public function insertUser($table, $fields = [])
+    // register / add data user into database
+    public function insertData($table, $fields = [])
     {
         $column = implode(", ", array_keys($fields));
 
@@ -58,14 +63,16 @@ class Database{
         if( $result ){
             return true;
         }else{
-            die('gagal tambah');
+            return false;
         }
     }
 
-    public function getUser($table, $key = '', $value = '')
+    // get data from spesific table on database
+    public function getData($table, $key = '', $value = '', $orderBy = '', $type = '')
     {
-        if ($key == '') {
+        if ($key == '' && $orderBy == '') {
             $query = "SELECT * FROM $table";
+            
             $result = $this->mysqli->query($query);
             if ( mysqli_num_rows($result) != 0 ) {
                 while ($row = $result->fetch_assoc()) {
@@ -74,6 +81,18 @@ class Database{
 
                 return $results;
             }else{
+                return false;
+            }
+        }else if($orderBy != ''){
+            $query = "SELECT * FROM $table ORDER BY $orderBy $type";
+            $result = $this->mysqli->query($query);
+            if (mysqli_num_rows($result) != 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $results[] = $row;
+                }
+
+                return $results;
+            } else {
                 return false;
             }
         }else{

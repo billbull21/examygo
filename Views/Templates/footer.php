@@ -1,7 +1,8 @@
+            </div>
         </div>
-    </div>
-    <script src="../Assets/js/jquery.slim.min.js"></script>
     <script src="../Assets/js/script.js"></script>
+    <script src="../Assets/clockpicker/jquery-clockpicker.min.js"></script>
     <script src="../Assets/bootstrap/js/bootstrap.min.js"></script>
-</body>
+    <script src="../Assets/sweetalert2/dist/sweetalert2.min.js"></script>
+    </body>
 </html>
