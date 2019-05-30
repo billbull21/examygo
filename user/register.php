@@ -12,7 +12,7 @@ if (Input::get('submit')) {
 
     if (Helper::checkToken(Input::get('csrf'))) {
         //menjaga isi form tidak hilang saat validasi gagal
-        $_SESSION = $_POST;
+        $_SESSION['register'] = $_POST;
         //panggil kelas validasi
         $validasi = new Validation;
 
@@ -67,7 +67,7 @@ if (Input::get('submit')) {
             $errors = $validasi->errors();
         }
     } else {
-            Redirect::to('/examygo/user/register.php');
+        Redirect::to('/examygo/user/register.php');
     }
 }
 require_once "../Views/Templates/header.php"; ?>
@@ -80,12 +80,12 @@ require_once "../Views/Templates/header.php"; ?>
             <div class="form-group">
                 <label for="nama_user">Nama<span class="text-danger">*</span></label>
                 <?php if (!empty($errors['nama_user'])) : ?><div class="alert alert-danger"><?= $errors['nama_user']; ?></div><?php endif; ?>
-                <input type="text" class="form-control" name="nama_user" id="nama" placeholder="Nama Admin/Pengawas/Proktor" value="<?php if (isset($_SESSION['nama_user'])) echo $_SESSION['nama_user']; ?>" required />
+                <input type="text" class="form-control" name="nama_user" id="nama" placeholder="Nama Admin/Pengawas/Proktor" value="<?php if (isset($_SESSION['register']['nama_user'])) echo $_SESSION['register']['nama_user']; ?>" required />
             </div>
             <div class="form-group">
                 <label for="username">Username<span class="text-danger">*</span></label>
                 <?php if (!empty($errors['username'])) : ?><div class="alert alert-danger"><?= $errors['username']; ?></div><?php endif; ?>
-                <input type="text" class="form-control" name="username" id="username" placeholder="admin" value="<?php if (isset($_SESSION['username'])) echo $_SESSION['username']; ?>" required />
+                <input type="text" class="form-control" name="username" id="username" placeholder="admin" value="<?php if (isset($_SESSION['register']['username'])) echo $_SESSION['register']['username']; ?>" required />
             </div>
             <div class="form-group">
                 <label for="password">Password<span class="text-danger">*</span></label>

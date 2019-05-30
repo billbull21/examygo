@@ -67,6 +67,39 @@ class Database{
         }
     }
 
+    public function insertAnswer($table, $dataTags = [], $dataSubj = [], $total, $fields = [], $cid, $aid)
+    {
+        $column = implode(', ', array_keys($fields));
+        $value  = implode(', ', array_values($fields));
+                
+        $value    = $this->escape($value);
+
+        //make a query default template
+        $query = "INSERT INTO $table (answer_tags, answer_subject, $column) VALUES ";
+        //concat with value which you want to concat with it.
+
+
+        for ($x = 0; $x < $total; $x++) {
+            //$dataTags[] = $this->escape($dataTags[$x]);
+            //$dataSubj[] = $this->escape($dataSubj[$x]);
+            $query .= "('$dataTags[$x]','$dataSubj[$x]',$value)";
+            if ($x < $total - 1) {
+                $query .= ", ";
+            }
+        }
+
+        $query = rtrim($query, ',');
+        $data = $this->mysqli->query($query);
+        
+        if ($data) {
+            //echo "<script>Swal.fire('Good Job!', 'success to upload data!', 'success');</script>";
+            unset($_SESSION['addquiz']);
+            Redirect::to("/examygo/courses/activity.php?course_id=$cid&id=$aid");
+        } else {
+            die('gagal');
+        }
+    }
+
     // get data from spesific table on database
     public function getData($table, $key = '', $value = '', $orderBy = '', $type = '')
     {

@@ -41,4 +41,25 @@ class Course{
         else return FALSE;
     }
 
+    public function getQuiz($key = '', $value = '', $orderBy = '', $type = '')
+    {
+        if ($key != '') {
+            return $this->_db->getData('quiz', $key, $value);
+        } else if ($key == '' && $value == '' && $orderBy != '') {
+            return $this->_db->getData('quiz', $key = '', $value = '', $orderBy, $type);
+        }
+        return $this->_db->getData('quiz', $key = '', $value = '');
+    }
+
+    public function addQuiz($fields = [])
+    {
+        if ($this->_db->insertData('quiz', $fields)) return TRUE;
+        else return FALSE;
+    }
+
+    public function addAnswer($fields = [])
+    {
+        if ($this->_db->insertData('answer', $fields)) return TRUE;
+        else return FALSE;
+    }
 }

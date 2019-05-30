@@ -10,15 +10,18 @@
     <link rel="stylesheet" href="../Assets/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../Assets/fontawesome/css/all.min.css" />
     <link rel="stylesheet" href="../Assets/clockpicker/jquery-clockpicker.min.css">
+    <link rel="stylesheet" href="../Assets/trumbowyg/dist/ui/trumbowyg.min.css" />
     <link rel="stylesheet" href="../Assets/css/style.css" />
     <link rel="stylesheet" href="../Assets/sweetalert2/dist/sweetalert2.min.css" />
     <link rel="stylesheet" href="../Assets/jquery-ui-1.11.4/smoothness/jquery-ui.css" />
     <link rel="stylesheet" href="../Assets/jquery-ui-1.11.4/jquery-ui.theme.css" />
     <!-- javascript -->
     <script src="../Assets/js/jquery.slim.min.js"></script>
+    <!-- Utility Jquery-UI -->
     <script src="../Assets/jquery-ui-1.11.4/external/jquery/jquery.js"></script>
     <script src="../Assets/jquery-ui-1.11.4/jquery-ui.js"></script>
     <script src="../Assets/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+    <!-- end -->
 </head>
 
 <body class="bg-light">
@@ -36,7 +39,7 @@
                         <!-- Example single danger button -->
                         <div class="dropdown">
                             <button type="button" class="btn btn-outline-primary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <?= $user->getUser('username', Session::get('examygoUser'))['nama_user']; ?>&nbsp;<i class="fas fa-user-circle"></i>
+                                <?= $nama = $user->getUser('username', Session::get('examygoUser'))['nama_user']; ?>&nbsp;<i class="fas fa-user-circle"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right position-absolute" aria-labelledby="dropdownMenuButton">
                                 <p class="dropdown-header"><?= Session::get('examygoUser') ?></p>
@@ -60,10 +63,10 @@
             <div class="menu">
                 <li><a href="/examygo/dashboard/"><i class="fas fa-tachometer-alt"></i>&nbsp;Dashboard</a></li>
                 <li><a href="/examygo/courses/"><i class="fas fa-book"></i>&nbsp;Courses</a></li>
-                <?php if ($user->getUser('username', Session::get('examygoUser'))['role'] == 2 || $user->getUser('username', Session::get('examygoUser'))['role'] == 1) :  ?>
+                <?php if ($user->getUser('username', Session::get('examygoUser'))['role'] != 0) :  ?>
                     <li><a href="/examygo/office/"><i class="fas fa-building"></i>&nbsp;Office</a></li>
                 <?php endif; ?>
-                <?php if (($user->getUser('username', Session::get('examygoUser'))['role'] == 2 || $user->getUser('username', Session::get('examygoUser'))['role'] == 1) && isset($courseId)) { ?>
+                <?php if ($user->getUser('username', Session::get('examygoUser'))['role'] != 0 && isset($courseId)) { ?>
                     <li><a href="/examygo/office/"><i class="fas fa-users"></i>&nbsp;Participant</a></li>
                 <?php } ?>
             </div>

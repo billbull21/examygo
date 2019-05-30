@@ -3,6 +3,7 @@
 require_once "../Core/init.php";
 
 if (!Session::exists('examygoUser')) {
+    Session::set('lastPage', $_SERVER['REQUEST_URI']);
     Redirect::to('/examygo/user/login.php');
 }
 
@@ -24,13 +25,13 @@ require_once "../Views/Templates/header.php";
                     <div id="activityWrapper">
                         <?= $activity['activity_date']; ?>
                         <ul>
-                            <li><a href="/examygo/courses/activity.php?course_id=<?=$courseId['course_id']?>&id=<?= $activity['activity_id'] ?>"><?= $activity['activity_name'] ?></a></li>
+                            <li><a href="/examygo/courses/activity.php?course_id=<?= $courseId['course_id'] ?>&id=<?= $activity['activity_id'] ?>"><?= $activity['activity_name'] ?></a></li>
                         </ul>
                     </div>
                 <?php endif ?>
             <?php endforeach;
     endif; ?>
-        <?php if ($user->getUser('username', Session::get('examygoUser'))['role'] == 2) { ?>
+        <?php if ($user->getUser('username', Session::get('examygoUser'))['role'] >= 1) { ?>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#activityModal">Add Activity</button>
 
             <div class="modal fade" id="activityModal" role="dialog">

@@ -1,7 +1,7 @@
 <?php
 require_once "../Core/init.php";
 
-if (!Session::exists('username')) {
+if (!Session::exists('examygoUser')) {
     Session::flash('examygoFlash', 'Anda Harus Login dulu!');
     Redirect::to('/examygo/user/login.php');
 }

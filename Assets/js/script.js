@@ -13,4 +13,5 @@ $(document).ready(function () {
         autoclose: true,
         placement: 'top',
     });
+    $('#trumbowyg').trumbowyg();
 });

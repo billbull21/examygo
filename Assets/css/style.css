@@ -28,6 +28,10 @@ body{
     -ms-flex: 0 0 320px;
     flex: 0 0 320px;
 }
+.my-asidebar {
+    -ms-flex: 0 0 400px;
+    flex: 0 0 400px;
+}
 .my-boxes{
     -ms-flex: 0 0 350px;
     flex: 0 0 350px;

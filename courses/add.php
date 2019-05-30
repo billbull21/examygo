@@ -5,12 +5,15 @@ require_once "../Core/init.php";
 if (!Session::exists('examygoUser')) {
     Redirect::to('/examygo/user/login.php');
 }
+if (Session::exists('examygoUser') && $user->getUser('username', Session::get('examygoUser'))['role'] <= 1) {
+    Redirect::to('/examygo/courses/');
+}
 
 if (Input::get('submit')) {
 
     if (Helper::checkToken(Input::get('csrf'))) {
         //secure user input into a session
-        $_SESSION['post'] = $_POST;
+        $_SESSION['addcourse'] = $_POST;
         //call validation class
         $validasi = new Validation;
 
@@ -64,12 +67,12 @@ require_once "../Views/Templates/header.php";
             <div class="form-group">
                 <label for="course_full_name">Course Full Name (title)<span class="text-danger">*</span></label>
                 <?php if (!empty($errors['course_full_name'])) : ?><div class="alert alert-danger"><?= $errors['course_full_name']; ?></div><?php endif; ?>
-                <input type="text" class="form-control" name="course_full_name" id="course_full_name" value="<?php if (isset($_SESSION['post']['course_full_name'])) echo $_SESSION['post']['course_full_name']; ?>" required />
+                <input type="text" class="form-control" name="course_full_name" id="course_full_name" value="<?php if (isset($_SESSION['addcourse']['course_full_name'])) echo $_SESSION['addcourse']['course_full_name']; ?>" required />
             </div>
             <div class="form-group">
                 <label for="course_short_name">Course Short Name<span class="text-danger">*</span></label>
                 <?php if (!empty($errors['course_short_name'])) : ?><div class="alert alert-danger"><?= $errors['course_short_name']; ?></div><?php endif; ?>
-                <input type="text" class="form-control" name="course_short_name" id="course_short_name" value="<?php if (isset($_SESSION['post']['course_short_name'])) echo $_SESSION['post']['course_short_name']; ?>" required />
+                <input type="text" class="form-control" name="course_short_name" id="course_short_name" value="<?php if (isset($_SESSION['addcourse']['course_short_name'])) echo $_SESSION['addcourse']['course_short_name']; ?>" required />
             </div>
             <div class="form-group">
                 <label for="course_visibility">Course Visibility</label>
