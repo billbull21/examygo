@@ -9,8 +9,8 @@ if (!Session::exists('examygoUser')) {
 
 $quiz = new Quiz;
 
-$courseId = $course->getCourse('course_id', $_GET['course_id']);
 $activity = $course->getActivity('activity_id', $_GET['id']);
+$courseId = $course->getCourse('course_id', $_GET['course_id']);
 $quizs = $quiz->getQuiz();
 
 require_once "../Views/Templates/header.php";
@@ -29,6 +29,23 @@ require_once "../Views/Templates/header.php";
                 </div>
             <?php } else { ?>
                 <!-- Info tentang activity, mis: date -> expire -->
+                <div class="warning text-center py-3 rounded" style="background: #bffff3">
+                    <?php if ($activity['status'] == 0) { ?>
+                        <p>not submitted yet</p>
+                        <p>Courses From : <?= $courseId['course_full_name'] ?></p>
+                        <?php if (date('d M Y H:i', strtotime($activity['activity_expire'])) < date('d M Y H:i')){ ?>
+                            <p class="text-danger">Was Expired</p>
+                        <?php } else { ?>
+                            <p>Will Expired on : <?= date('d M Y H:i', strtotime($activity['activity_expire'])); ?></p>
+                        <?php } ?>
+                        <p><?= date('l, d M Y H:i') ?></p>
+                        <button type="submit" class="btn btn-primary" id="masuk">Enroll Me</button>
+                    <?php } else { ?>
+                        <p>submitted on : </p>
+                        <p>Courses From : <?= $course['course_full_name'] ?></p>
+                        <a class="btn btn-light" href="/examygo/courses/">Back To Courses</a>
+                    <?php } ?>
+                </div>
                 <!-- Hitung Jumlah quiz yg terhubung dengan id activity -->
                 <!-- tombol memasukkan token -->
                 <!-- validasi token -->

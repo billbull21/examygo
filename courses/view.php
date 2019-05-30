@@ -8,7 +8,7 @@ if (!Session::exists('examygoUser')) {
 }
 
 $courseId = $course->getCourse('course_id', $_GET['id']);
-$activitys = $course->getActivity('', '', 'activity_date', 'ASC');
+$activitys = $course->getWhere('activity', 'course_id', $courseId['course_id'], 'activity_date', 'ASC');
 
 require_once "../Views/Templates/header.php";
 ?>
@@ -19,18 +19,39 @@ require_once "../Views/Templates/header.php";
     <div class="col col-md shadow-sm rounded bg-white m-2 py-2">
         <h3><?= $courseId['course_full_name']; ?></h3>
         <hr />
-
-        <?php if (!empty($activitys)) : foreach ($activitys as $activity) : ?>
-                <?php if ($activity['course_id'] == $courseId['course_id']) : ?>
-                    <div id="activityWrapper">
-                        <?= $activity['activity_date']; ?>
-                        <ul>
-                            <li><a href="/examygo/courses/activity.php?course_id=<?= $courseId['course_id'] ?>&id=<?= $activity['activity_id'] ?>"><?= $activity['activity_name'] ?></a></li>
-                        </ul>
-                    </div>
-                <?php endif ?>
-            <?php endforeach;
-    endif; ?>
+        <div id="activityWrapper">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Activity</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Expire</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $i = 1;
+                    if (!empty($activitys)) : foreach ($activitys as $activity) : ?>
+                            <tr>
+                                <th scope="row"><?= $i ?></th>
+                                <td><a href="/examygo/courses/activity.php?course_id=<?= $courseId['course_id'] ?>&id=<?= $activity['activity_id'] ?>"><?= $activity['activity_name'] ?></a></td>
+                                <td><?= date('d M Y H:i', strtotime($activity['activity_date'])); ?></td>
+                                <td><?= date('d M Y H:i', strtotime($activity['activity_expire'])); ?></td>
+                                <td>
+                                    <?php if ($activity['status'] == 0) { ?>
+                                        <span type="submit" class="btn btn-danger" id="sendStatus">Not Yet</span>
+                                    <?php } else { ?>
+                                        <span type="submit" class="btn btn-success">Submited</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                            <?php $i++;
+                        endforeach;
+                    endif; ?>
+                </tbody>
+            </table>
+        </div>
         <?php if ($user->getUser('username', Session::get('examygoUser'))['role'] >= 1) { ?>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#activityModal">Add Activity</button>
 

@@ -145,6 +145,35 @@ class Database{
         }
     }
 
+    public function getWhere( $table, $key, $value, $orderBy = '', $type = '')
+    {
+        if ($orderBy != '') {
+            $query = "SELECT * FROM $table WHERE $key = $value ORDER BY $orderBy $type";
+            $result = $this->mysqli->query($query);
+            if (mysqli_num_rows($result) != 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $results[] = $row;
+                }
+
+                return $results;
+            } else {
+                return false;
+            }
+        }else{
+            $query = "SELECT * FROM $table WHERE $key = $value";
+            $result = $this->mysqli->query($query);
+            if (mysqli_num_rows($result) != 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $results[] = $row;
+                }
+
+                return $results;
+            } else {
+                return false;
+            }
+        }
+    }
+
     //escaping input
     public function escape($nama)
     {

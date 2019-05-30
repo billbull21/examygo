@@ -67,7 +67,7 @@
                     <li><a href="/examygo/office/"><i class="fas fa-building"></i>&nbsp;Office</a></li>
                 <?php endif; ?>
                 <?php if ($user->getUser('username', Session::get('examygoUser'))['role'] != 0 && isset($courseId)) { ?>
-                    <li><a href="/examygo/office/"><i class="fas fa-users"></i>&nbsp;Participant</a></li>
+                    <li><a href="/examygo/courses/addparticipant.php"><i class="fas fa-users"></i>&nbsp;Participant</a></li>
                 <?php } ?>
             </div>
         </div>
